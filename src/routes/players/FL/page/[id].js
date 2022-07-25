@@ -5,7 +5,7 @@ export async function GET({params}) {
     const supabase = createClient(import.meta.env.VITE_API_URL, import.meta.env.VITE_API_KEY);
     const { data, error } = await supabase
         .from('players')
-        .select('*')
+        .select('uid, name, avatar, email, totalFLpt, totalDLpt, flrank, dlrank')
         .order('flrank', {ascending: true})
         .range((params.id - 1) * 200, params.id * 200 - 1)
         .not("dlTop", 'is', null)
