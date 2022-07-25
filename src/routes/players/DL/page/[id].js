@@ -6,8 +6,9 @@ export async function GET({params}) {
     const { data, error } = await supabase
         .from('players')
         .select('*')
-        .order('dlrank', {ascending: false})
+        .order('dlrank', {ascending: true})
         .range((params.id - 1) * 200, params.id * 200 - 1)
+        .not("dlTop", 'is', null)
     for(const i in data){
         if(data[i].dlrank == null) {
             delete data[i]
