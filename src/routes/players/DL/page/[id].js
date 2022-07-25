@@ -8,7 +8,7 @@ export async function GET({params}) {
         .select('uid, name, avatar, email, totalFLpt, totalDLpt, flrank, dlrank')
         .order('dlrank', {ascending: true})
         .range((params.id - 1) * 200, params.id * 200 - 1)
-        .not("dlTop", 'is', null)
+        .not("dlrank", 'is', null)
     for(const i in data){
         if(data[i].dlrank == null) {
             delete data[i]
