@@ -11,7 +11,7 @@ export async function GET({params}) {
         .from('players')
         .select('*')
         .eq('uid', params.id)
-    d.data = data
+    d.data = data[0]
     var { data, error } = await supabase
         .from('records')
         .select('*')
