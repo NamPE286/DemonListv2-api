@@ -14,7 +14,7 @@ export async function GET({params}) {
     d.data = data[0]
     var { data, error } = await supabase
         .from('records')
-        .select('*')
+        .select('*, levels(name)')
         .eq('userid', params.id)
     d.records = data
     return {
