@@ -5,7 +5,7 @@ export async function GET({params}) {
     const supabase = createClient(import.meta.env.VITE_API_URL, import.meta.env.VITE_API_KEY);
     const d = {
         data:{},
-        records:{}
+        records:[]
     }
     var { data, error } = await supabase
         .from('players')
