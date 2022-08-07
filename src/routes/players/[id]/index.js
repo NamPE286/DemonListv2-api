@@ -16,6 +16,7 @@ export async function GET({params}) {
         .from('records')
         .select('*, levels(name)')
         .eq('userid', params.id)
+        .order('timestamp', {ascending: false})
     d.records = data
     return {
         status: 200,
