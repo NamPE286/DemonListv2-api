@@ -12,6 +12,7 @@ export async function GET({ params }) {
     id = id.join(' ')
     if (isNaN(params.id)) {
         var d = []
+        var m = {}
         var { data, error } = await supabase
             .from('levels')
             .select('*')
@@ -19,10 +20,8 @@ export async function GET({ params }) {
                 type: 'websearch',
                 config: 'english'
             })
-        d = JSON.parse(JSON.stringify(data))
-        var set = new Set()
-        for (var i = 0; i < d.length; i++) {
-            set.add(d[i])
+        for (var i = 0; i < data.length; i++) {
+            m[data[i].id] = data[i]
         }
         var { data, error } = await supabase
             .from('levels')
@@ -32,18 +31,33 @@ export async function GET({ params }) {
                 config: 'english'
             })
         for (var i = 0; i < data.length; i++) {
-            set.add(data[i])
+            m[data[i].id] = data[i]
         }
+        var { data, error } = await supabase
+            .from('players')
+            .select('name, uid')
+            .textSearch('name', `'${params.id}'`, {
+                type: 'websearch',
+                config: 'english'
+            })
+        var players = []
+        for (var i = 0; i < data.length; i++) {
+            players.push({
+                id: data[i].uid,
+                name: data[i].name
+            })
+        }
+        console.log(data, error)
         var list = []
-        for (var item of set) {
-            list.push(item)
+        for(const i in m){
+            list.push(m[i])
         }
         return {
             status: 200,
             headers: {
                 'access-control-allow-origin': '*'
             },
-            body: d            
+            body: [list, players]
         };
     }
     else {
